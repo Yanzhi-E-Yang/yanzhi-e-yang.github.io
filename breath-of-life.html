@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breath of Life — Yanzhi Yang Portfolio</title>
+  <meta name="description" content="Breath of Life — A biofeedback breathing game for emotion regulation. CHI 2026 Best Paper Award. Designed by Yanzhi (Elliot) Yang.">
+  <meta property="og:title" content="Breath of Life — Yanzhi Yang Portfolio">
+  <meta property="og:description" content="A biofeedback breathing game for emotion regulation. CHI 2026 Best Paper Award.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-teal: #1A9E8F;
+      --color-teal-light: #4ECDC4;
+      --color-teal-pale: #F0FAF9;
+      --color-gold: #D4A017;
+      --color-dark-slate: #1A1F2E;
+      --color-warm-white: #FAFEFF;
+      --color-neutral-gray: #6B7280;
+      --color-border: rgba(26, 158, 143, 0.15);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-teal-pale);
+      color: var(--color-dark-slate);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(240, 250, 249, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      transition: background 0.3s;
+    }
+    nav .logo {
+      font-family: var(--font-serif);
+      font-size: 18px; color: var(--color-dark-slate);
+      text-decoration: none; font-weight: 700;
+    }
+    nav .back {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; color: var(--color-neutral-gray);
+      text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+    nav .back:hover { color: var(--color-teal); }
+    nav .back::before { content: '←'; font-size: 13px; font-family: var(--font-sans); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex; align-items: center;
+      overflow: hidden;
+      padding: 120px 48px 80px;
+      background: #0a1014;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center center;
+    }
+    /* uniform dark overlay — keeps banner art subtle so icon stands out */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(8, 16, 20, 0.70);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 80px; align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-teal-light);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--color-teal-light); }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(48px, 6vw, 72px); line-height: 1.05;
+      color: #ffffff; font-weight: 700; letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.72);
+      font-weight: 300; margin-bottom: 28px; max-width: 480px;
+    }
+    .award-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(212,160,23,0.14);
+      border: 1.5px solid rgba(212,160,23,0.65);
+      border-radius: 100px;
+      padding: 10px 20px; margin-bottom: 32px;
+      font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+      color: #f0c040; letter-spacing: 0.02em;
+    }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 13px 26px; border-radius: 6px;
+      font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+      letter-spacing: 0.03em; text-decoration: none; cursor: pointer;
+      transition: all 0.25s; border: 1.5px solid transparent;
+    }
+    .btn-primary { background: var(--color-teal); color: #fff; border-color: var(--color-teal); }
+    .btn-primary:hover {
+      background: #158a7c; border-color: #158a7c;
+      transform: translateY(-1px); box-shadow: 0 8px 24px rgba(26,158,143,0.3);
+    }
+    .btn-secondary {
+      background: transparent; color: rgba(255,255,255,0.85);
+      border-color: rgba(255,255,255,0.38);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.65);
+    }
+    .btn:focus-visible { outline: 2px solid var(--color-teal-light); outline-offset: 3px; }
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: 11px; color: rgba(255,255,255,0.42);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* Hero right: App Icon */
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .app-icon-wrap {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .app-icon {
+      width: 240px; height: 240px;
+      border-radius: 54px; /* iOS-style continuous corner radius */
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1.5px rgba(255,255,255,0.18),
+        0 28px 72px rgba(0,0,0,0.45),
+        0 0 48px rgba(100,210,195,0.18);
+    }
+    .app-icon img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /* ── QUICK FACTS ── */
+    .quick-facts {
+      background: var(--color-warm-white);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      padding: 32px 48px;
+    }
+    .quick-facts-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+    }
+    .fact-item {
+      padding: 12px 24px; display: flex; flex-direction: column; gap: 5px;
+      border-right: 1px solid var(--color-border);
+    }
+    .fact-item:first-child { padding-left: 0; }
+    .fact-item:last-child { border-right: none; }
+    .fact-label {
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-teal);
+    }
+    .fact-value {
+      font-size: 14px; font-weight: 500; color: var(--color-dark-slate); line-height: 1.4;
+    }
+
+    /* ── SECTION BASE ── */
+    .section { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+    .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 48px; }
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-teal); min-width: 24px;
+    }
+    .section h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 36px); color: var(--color-dark-slate);
+      letter-spacing: -0.01em; line-height: 1.2;
+      position: relative; padding-left: 18px;
+    }
+    .section h2::before {
+      content: '';
+      position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 3px; background: var(--color-teal); border-radius: 2px;
+    }
+
+    /* ── ABOUT ── */
+    .about-layout {
+      display: grid; grid-template-columns: 1.5fr 1fr; gap: 72px; align-items: start;
+    }
+    .about-lead {
+      font-size: 18px; line-height: 1.8; color: var(--color-dark-slate);
+      font-weight: 300; margin-bottom: 32px;
+    }
+    .how-title {
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--color-teal); margin-bottom: 16px;
+    }
+    .how-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    .how-step { display: flex; gap: 16px; align-items: flex-start; }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 12px; font-weight: 500; color: var(--color-teal);
+      min-width: 22px; padding-top: 2px;
+    }
+    .how-step p { font-size: 15px; line-height: 1.7; color: #374151; font-weight: 300; }
+    .research-context {
+      font-size: 15px; line-height: 1.8; color: var(--color-neutral-gray);
+      font-weight: 300; padding: 22px 24px;
+      background: var(--color-warm-white);
+      border-left: 3px solid var(--color-teal-light);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* About right: CHI photos stacked */
+    .about-visual { display: flex; align-items: flex-start; }
+    .chi-right {
+      display: flex; flex-direction: column; gap: 14px; width: 100%;
+    }
+    .chi-photo {
+      border-radius: 10px; overflow: hidden; position: relative;
+      box-shadow: 0 8px 28px rgba(26,31,46,0.16);
+    }
+    .chi-photo img {
+      width: 100%; display: block;
+      aspect-ratio: 4/3; object-fit: cover;
+      transition: transform 0.35s;
+    }
+    .chi-photo:hover img { transform: scale(1.03); }
+    .chi-photo-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px 14px 12px;
+      background: linear-gradient(to top, rgba(15,22,30,0.78) 0%, transparent 100%);
+      font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.72);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      background: rgba(8,12,18,0.94);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+      animation: lbFadeIn 0.2s ease;
+    }
+    .lightbox.active { display: flex; }
+    @keyframes lbFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .lightbox-img-wrap {
+      position: relative; max-width: 92vw; max-height: 90vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox img {
+      max-width: 92vw; max-height: 88vh;
+      object-fit: contain; border-radius: 8px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: fixed; top: 20px; right: 28px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); border: none;
+      color: rgba(255,255,255,0.85); font-size: 22px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.22); color: #fff; }
+    /* cursor hint on zoomable images */
+    .zoomable { cursor: zoom-in; }
+
+    /* ── CONTRIBUTIONS ── */
+    .contributions-bg {
+      background: var(--color-warm-white);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .contributions-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; background: var(--color-border);
+    }
+    .contrib-card {
+      background: var(--color-warm-white); padding: 36px 28px;
+      border-left: 4px solid transparent;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .contrib-card:hover {
+      border-left-color: var(--color-teal);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(26,158,143,0.1);
+      position: relative; z-index: 1;
+    }
+    .contrib-icon { font-size: 26px; margin-bottom: 14px; display: block; }
+    .contrib-title {
+      font-size: 15px; font-weight: 500; color: var(--color-dark-slate);
+      margin-bottom: 10px;
+    }
+    .contrib-desc {
+      font-size: 13.5px; line-height: 1.7; color: var(--color-neutral-gray); font-weight: 300;
+    }
+
+    /* ── PAPER ── */
+    .paper-card {
+      background: var(--color-warm-white);
+      border-left: 4px solid var(--color-teal);
+      border-radius: 0 8px 8px 0;
+      padding: 40px 48px;
+      box-shadow: 0 2px 16px rgba(26,158,143,0.06);
+    }
+    .paper-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--color-teal); margin-bottom: 20px;
+    }
+    .paper-title {
+      font-family: var(--font-serif);
+      font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5;
+      color: var(--color-dark-slate); font-style: italic; margin-bottom: 14px;
+    }
+    .paper-authors { font-size: 14px; color: var(--color-neutral-gray); margin-bottom: 6px; font-weight: 300; }
+    .paper-venue { font-size: 13px; color: var(--color-neutral-gray); margin-bottom: 20px; }
+    .paper-award {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(212,160,23,0.1); border: 1px solid rgba(212,160,23,0.4);
+      border-radius: 100px; padding: 7px 16px;
+      font-size: 13px; font-weight: 500; color: #a07810; margin-bottom: 24px;
+    }
+    .btn-teal { background: var(--color-teal); color: #fff; border-color: var(--color-teal); }
+    .btn-teal:hover {
+      background: #158a7c; border-color: #158a7c;
+      transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,158,143,0.25);
+    }
+
+    /* ── GALLERY ── */
+    .gallery-bg { background: var(--color-dark-slate); padding: 80px 48px; }
+    .gallery-inner { max-width: 1200px; margin: 0 auto; }
+    .gallery-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 40px; }
+    .gallery-num {
+      font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--color-teal-light);
+    }
+    .gallery-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3vw, 36px); color: rgba(240,250,249,0.9);
+      letter-spacing: -0.01em;
+    }
+
+    /* Row 1: single full-width hero image */
+    .gallery-row1 {
+      margin-bottom: 14px;
+    }
+    /* Row 2 & 3: three equal columns */
+    .gallery-row2, .gallery-row3 {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 14px;
+    }
+    .gallery-row3 { margin-bottom: 0; }
+
+    .gallery-item {
+      border-radius: 10px; overflow: hidden;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background: rgba(255,255,255,0.03);
+    }
+    .gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* Constrain heights */
+    .gallery-item.hero-wide { aspect-ratio: 21/9; }
+    .gallery-item.landscape { aspect-ratio: 16/9; }
+
+    .gallery-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px 16px 14px;
+      background: linear-gradient(to top, rgba(10,15,20,0.78) 0%, transparent 100%);
+      font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,0.6);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 1200px; margin: 0 auto;
+      padding: 56px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid var(--color-border);
+    }
+    .footer-back, .footer-next {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-neutral-gray); text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.2s;
+    }
+    .footer-back:hover, .footer-next:hover { color: var(--color-teal); }
+    .footer-back::before { content: '←'; font-family: var(--font-sans); font-size: 14px; }
+    .footer-next::after  { content: '→'; font-family: var(--font-sans); font-size: 14px; }
+    .footer-center {
+      font-family: var(--font-serif); font-size: 15px; color: var(--color-dark-slate);
+      text-align: center; letter-spacing: -0.01em;
+    }
+    .footer-center span {
+      font-family: var(--font-sans); font-size: 12px; color: var(--color-neutral-gray);
+      display: block; margin-top: 3px; font-weight: 300;
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1199px) {
+      .quick-facts-inner { grid-template-columns: repeat(3, 1fr); }
+      .contributions-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-row2, .gallery-row3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .hero { padding: 100px 24px 64px; min-height: 80vh; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { display: none; }
+      .quick-facts { padding: 24px; }
+      .quick-facts-inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px; background: var(--color-border);
+      }
+      .fact-item { padding: 14px 16px; border-right: none; background: var(--color-warm-white); }
+      .section { padding: 56px 24px; }
+      .about-layout { grid-template-columns: 1fr; gap: 40px; }
+      .chi-right { flex-direction: row; flex-wrap: wrap; }
+      .chi-right .chi-photo { flex: 1 1 240px; }
+      .contributions-grid { grid-template-columns: 1fr; }
+      .paper-card { padding: 28px 24px; }
+      .gallery-bg { padding: 56px 24px; }
+      .gallery-item.hero-wide { aspect-ratio: 16/9; }
+      .gallery-row2, .gallery-row3 { grid-template-columns: 1fr; }
+      .page-footer { flex-direction: column; gap: 24px; padding: 40px 24px; }
+    }
+    @media (max-width: 768px) {
+      .hero-cta { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+      .award-badge { font-size: 13px; }
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--color-teal); outline-offset: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Site navigation">
+  <a href="index.html" class="logo">Yanzhi Yang</a>
+  <a href="index.html#portfolio" class="back" aria-label="Back to all projects">All Projects</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" role="banner">
+  <div class="hero-bg">
+    <img src="Image/Breath%20of%20Life/AppStore_Banner.jpg"
+         alt="" aria-hidden="true" loading="eager">
+  </div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Research Game &nbsp;·&nbsp; Health &amp; Longevity</div>
+      <h1>Breath of Life</h1>
+      <p class="hero-subtitle">A biofeedback breathing game for emotion regulation</p>
+      <div class="award-badge" role="img" aria-label="CHI 2026 Best Paper Award">
+        <span>🏆</span>
+        <span>CHI 2026 Best Paper Award</span>
+      </div>
+      <div class="hero-cta">
+        <a href="https://lnkd.in/gyTxvVc4"
+           class="btn btn-primary" target="_blank" rel="noopener noreferrer"
+           aria-label="Read the paper (opens in new tab)">
+          Read the Paper ↗
+        </a>
+        <a href="https://apps.apple.com/cn/app/%E7%94%9F%E5%91%BD%E4%B9%8B%E6%81%AF-%E5%91%BC%E5%90%B8%E6%94%BE%E6%9D%BE%E8%AE%AD%E7%BB%83/id6753211831?l=en-GB"
+           class="btn btn-secondary" target="_blank" rel="noopener noreferrer"
+           aria-label="Download on the App Store (opens in new tab)">
+          App Store ↗
+        </a>
+      </div>
+      <p class="hero-role">
+        Yanzhi Yang — Designer &amp; Researcher &nbsp;·&nbsp; Collaboration: Tsinghua Future Lab
+      </p>
+    </div>
+    <div class="hero-visual">
+      <div class="app-icon-wrap">
+        <div class="app-icon">
+          <img src="Image/Breath%20of%20Life/App_Icon.jpg"
+               alt="Breath of Life app icon" loading="eager">
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- QUICK FACTS -->
+<section class="quick-facts" aria-label="Project at a glance">
+  <div class="quick-facts-inner">
+    <div class="fact-item">
+      <span class="fact-label">Venue</span>
+      <span class="fact-value">CHI 2026</span>
+    </div>
+    <div class="fact-item">
+      <span class="fact-label">Award</span>
+      <span class="fact-value">Best Paper Award</span>
+    </div>
+    <div class="fact-item">
+      <span class="fact-label">Topic</span>
+      <span class="fact-value">Respiratory Biofeedback · Emotion Regulation · Women's Health</span>
+    </div>
+    <div class="fact-item">
+      <span class="fact-label">Platform</span>
+      <span class="fact-value">iOS (App Store)</span>
+    </div>
+    <div class="fact-item">
+      <span class="fact-label">Lab</span>
+      <span class="fact-value">Future Laboratory, Tsinghua University</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" aria-labelledby="about-heading">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 id="about-heading">About the Project</h2>
+  </div>
+  <div class="about-layout">
+    <div>
+      <p class="about-lead reveal">
+        Breath of Life is a mobile breathing game that turns respiratory biofeedback into a playable
+        interaction — using the player's own breath to guide creatures through a living forest, defeat
+        an inner demon, and build lasting habits of emotional self-regulation.
+      </p>
+      <div class="reveal">
+        <p class="how-title">How It Works</p>
+        <div class="how-steps">
+          <div class="how-step">
+            <span class="step-num">01</span>
+            <p>The player uses their breath as a game controller — inhaling and exhaling to move and interact within the game world.</p>
+          </div>
+          <div class="how-step">
+            <span class="step-num">02</span>
+            <p>Breathing guides magical forest creatures and confronts an inner demon — a metaphor for the emotional dysregulation the player is working to address.</p>
+          </div>
+          <div class="how-step">
+            <span class="step-num">03</span>
+            <p>Every breathing exercise is grounded in clinical evidence, drawn from established respiratory biofeedback and emotion regulation research.</p>
+          </div>
+        </div>
+      </div>
+      <blockquote class="research-context reveal">
+        Accepted at CHI 2026, this research was designed to support emotion regulation for users
+        in high-stress, isolated environments — a context that demands both clinical rigor and
+        compassionate design. The study focused on women in compulsory isolation drug rehabilitation
+        centers, a population rarely centered in games research.
+      </blockquote>
+    </div>
+    <div class="about-visual reveal">
+      <div class="chi-right">
+        <figure class="chi-photo">
+          <img class="zoomable"
+               src="Image/Breath%20of%20Life/CHI2026_photo1.jpeg"
+               alt="CHI 2026 presentation: Best Paper Award slide for Breath of Life on stage"
+               loading="lazy">
+          <figcaption class="chi-photo-label">CHI 2026 · Best Paper Award Presentation</figcaption>
+        </figure>
+        <figure class="chi-photo">
+          <img class="zoomable"
+               src="Image/Breath%20of%20Life/CHI2026_photo2.jpeg"
+               alt="CHI 2026 presentation: research findings on emotional challenges for women in recovery"
+               loading="lazy">
+          <figcaption class="chi-photo-label">CHI 2026 · Research Presentation</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRIBUTIONS -->
+<div class="contributions-bg">
+  <section class="section" aria-labelledby="contributions-heading">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 id="contributions-heading">My Contributions</h2>
+    </div>
+    <div class="contributions-grid">
+      <article class="contrib-card reveal">
+        <span class="contrib-icon" aria-hidden="true">🎮</span>
+        <h3 class="contrib-title">Game Design</h3>
+        <p class="contrib-desc">
+          Designed the core interaction model mapping breath rhythm to in-game action.
+          Created creature concepts and forest environment direction that embody the
+          emotional regulation metaphor.
+        </p>
+      </article>
+      <article class="contrib-card reveal" style="transition-delay: 80ms">
+        <span class="contrib-icon" aria-hidden="true">🔬</span>
+        <h3 class="contrib-title">UX Research</h3>
+        <p class="contrib-desc">
+          Participated in user research design and iterative playtesting with target users.
+          Synthesized qualitative feedback into concrete design improvements across sessions.
+        </p>
+      </article>
+      <article class="contrib-card reveal" style="transition-delay: 160ms">
+        <span class="contrib-icon" aria-hidden="true">✦</span>
+        <h3 class="contrib-title">Visual &amp; Animation</h3>
+        <p class="contrib-desc">
+          Created animations and visual assets for the game world. Established art direction
+          that balances clinical purpose with warmth — a forest that feels safe, not sterile.
+        </p>
+      </article>
+      <article class="contrib-card reveal" style="transition-delay: 240ms">
+        <span class="contrib-icon" aria-hidden="true">📄</span>
+        <h3 class="contrib-title">Paper Co-author</h3>
+        <p class="contrib-desc">
+          Co-authored the CHI 2026 Best Paper. Contributed to methodology, design sections,
+          and the framing of breath-as-controller as a design principle.
+        </p>
+      </article>
+    </div>
+  </section>
+</div>
+
+<!-- PAPER -->
+<section class="section" aria-labelledby="research-heading">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 id="research-heading">The Research</h2>
+  </div>
+  <div class="paper-card reveal">
+    <p class="paper-eyebrow">Published Research</p>
+    <h3 class="paper-title">
+      Designing for Long-Term Emotion Regulation: A Breathing Biofeedback Game for Women
+      in Compulsory Isolation Drug Rehabilitation Centers
+    </h3>
+    <p class="paper-authors">Qi Chen, Jiachen Du, Zhihao Yao, … Yanzhi Yang, … et al.</p>
+    <p class="paper-venue">CHI '26, ACM CHI Conference on Human Factors in Computing Systems</p>
+    <div class="paper-award" role="img" aria-label="Best Paper Award">🏆 &nbsp;Best Paper Award</div>
+    <br>
+    <a href="https://lnkd.in/gyTxvVc4" class="btn btn-teal"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="Read full paper (opens in new tab)">
+      Read Full Paper ↗
+    </a>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-bg" aria-labelledby="gallery-heading">
+  <div class="gallery-inner">
+    <div class="gallery-header reveal">
+      <span class="gallery-num">04</span>
+      <h2 id="gallery-heading">Media Gallery</h2>
+    </div>
+
+    <!-- Row 1: full-width ending scene -->
+    <div class="gallery-row1">
+      <figure class="gallery-item hero-wide reveal"
+              aria-label="Day 7 — the game's hopeful final ending">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/%E7%AC%AC7%E5%A4%A9.png"
+             alt="The game's Day 7 ending: a luminous tree of life rises from a tranquil pond surrounded by butterflies and blooming meadows"
+             loading="lazy" style="object-position: center center;">
+        <figcaption class="gallery-caption">Day 7 · The Hopeful Ending</figcaption>
+      </figure>
+    </div>
+
+    <!-- Row 2: three gameplay shots -->
+    <div class="gallery-row2">
+      <figure class="gallery-item landscape reveal"
+              aria-label="Inner demon encounter — core gameplay moment">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/%E5%BF%83%E9%AD%94%E9%80%9A%E7%9F%A5.jpg"
+             alt="Gameplay screenshot: inner demon appears, player confronts it through breath control"
+             loading="lazy">
+        <figcaption class="gallery-caption">Inner Demon Encounter · Gameplay</figcaption>
+      </figure>
+      <figure class="gallery-item landscape reveal" style="transition-delay: 80ms"
+              aria-label="Main gameplay — forest area with creatures">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/%E5%8C%BA%E5%9F%9F%E5%90%8D%E5%BC%B9%E7%AA%97-%E6%95%88%E6%9E%9C.jpg"
+             alt="Gameplay screenshot: player in forest meadow with magical creatures and area name UI"
+             loading="lazy">
+        <figcaption class="gallery-caption">Forest Meadow · Exploration</figcaption>
+      </figure>
+      <figure class="gallery-item landscape reveal" style="transition-delay: 160ms"
+              aria-label="Healing interface — 4-4-4 breathing technique">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/Healing_Interface.png"
+             alt="In-game healing interface showing 4-4-4 breathing technique with character meditating"
+             loading="lazy">
+        <figcaption class="gallery-caption">Healing Interface · 4-4-4 Breathing</figcaption>
+      </figure>
+    </div>
+
+    <!-- Row 3: three outcome shots -->
+    <div class="gallery-row3">
+      <figure class="gallery-item landscape reveal"
+              aria-label="Nightmare mode — dark breathing battle">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/Breathing_dark.png"
+             alt="Dark mode gameplay: player faces nightmare demon tree during breath-controlled battle"
+             loading="lazy">
+        <figcaption class="gallery-caption">Nightmare Mode · Breath Battle</figcaption>
+      </figure>
+      <figure class="gallery-item landscape reveal" style="transition-delay: 80ms"
+              aria-label="Success state — rescue complete">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/Success_Background.png"
+             alt="Success screen: lush green forest with 拯救成功 (rescue successful) text"
+             loading="lazy">
+        <figcaption class="gallery-caption">Success State · Rescue Complete</figcaption>
+      </figure>
+      <figure class="gallery-item landscape reveal" style="transition-delay: 160ms"
+              aria-label="Failure state — dark atmosphere">
+        <img class="zoomable"
+             src="Image/Breath%20of%20Life/Failure_Background.png"
+             alt="Failure screen: dark moody landscape with 拯救失败 (rescue failed) text"
+             loading="lazy">
+        <figcaption class="gallery-caption">Failure State · Dark Atmosphere</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button id="lightbox-close" class="lightbox-close" aria-label="Close">✕</button>
+  <div class="lightbox-img-wrap">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="page-footer">
+    <a href="index.html#portfolio" class="footer-back" aria-label="Back to all projects">
+      All Projects
+    </a>
+    <div class="footer-center">
+      Breath of Life
+      <span>CHI 2026 · Yanzhi (E) Yang</span>
+    </div>
+    <a href="osvita.html" class="footer-next" aria-label="Next project: OsVita">
+      Next: OsVita
+    </a>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav background solidifies on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(240,250,249,0.97)'
+      : 'rgba(240,250,249,0.85)';
+  }, { passive: true });
+
+  // ── Lightbox ──
+  const lightbox   = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lightbox-img');
+  const lbClose    = document.getElementById('lightbox-close');
+
+  function openLightbox(src, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  document.querySelectorAll('.zoomable').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
+  });
+
+  // Close on backdrop click (but not on the image itself)
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox || e.target === lightbox.querySelector('.lightbox-img-wrap')) {
+      closeLightbox();
+    }
+  });
+  lbClose.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+  });
+</script>
+</body>
+</html>
