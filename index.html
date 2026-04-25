@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yanzhi (E) Yang - Designer & Animator</title>
+    <title>Yanzhi (Elliot) Yang - Designer & Animator</title>
     <style>
         * {
             margin: 0;
@@ -48,14 +48,8 @@
             margin: 0 auto;
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-        }
-
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
         }
 
         .nav-links {
@@ -108,11 +102,70 @@
             animation: fadeInUp 0.8s ease-out;
         }
 
+        .hero-eyebrow {
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+        }
+
         .hero h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            letter-spacing: -1px;
+            font-size: 4.25rem;
+            line-height: 1.05;
+            margin-bottom: 0.75rem;
+            letter-spacing: -2px;
+            font-weight: 700;
+        }
+
+        .hero h1 .accent-paren {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .hero-role {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.3px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .hero-role::before {
+            content: '';
+            display: inline-block;
+            width: 36px;
+            height: 1px;
+            background: var(--primary);
+        }
+
+        .hero-focus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-focus span {
+            display: inline-block;
+            padding: 0.5rem 1.1rem;
+            background: rgba(0, 102, 255, 0.08);
+            color: var(--accent);
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+        }
+
+        .hero-focus span:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
         }
 
         .hero-subtitle {
@@ -364,7 +417,16 @@
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.75rem;
+                letter-spacing: -1px;
+            }
+
+            .hero-role {
+                font-size: 1.2rem;
+            }
+
+            .hero-role::before {
+                width: 24px;
             }
 
             .hero-subtitle {
@@ -399,7 +461,6 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">Yanzhi Yang</div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#portfolio">Work</a></li>
@@ -411,8 +472,14 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-container">
-            <h1>Designer & Animator</h1>
-            <p class="hero-subtitle">Games, Health &amp; Aging</p>
+            <p class="hero-eyebrow">Hello — I'm</p>
+            <h1>Yanzhi <span class="accent-paren">(Elliot)</span> Yang</h1>
+            <p class="hero-role">Interactive Designer</p>
+            <div class="hero-focus" aria-label="Focus areas">
+                <span>Games</span>
+                <span>Health Tech</span>
+                <span>Aging</span>
+            </div>
             <p class="hero-subtitle" style="font-size: 1.05rem; margin-bottom: 2rem;">
                 I use animation and interactive design to make complex topics — health, aging, memory — feel human and accessible.
             </p>
@@ -535,15 +602,14 @@
         </p>
         <div class="contact-links">
             <a href="tel:+12132722725" class="contact-link">(+1) 213-272-2725</a>
-            <a href="mailto:yanzhiya@usc.edu" class="contact-link">yanzhiya@usc.edu</a>
-            <a href="mailto:yanzhiyang2026@gmail.com" class="contact-link">yanzhiyang2026@gmail.com</a>
+            <a href="mailto:elliotyang2026@gmail.com" class="contact-link">elliotyang2026@gmail.com</a>
             <a href="https://www.linkedin.com/in/yanzhi-e-yang-2474b6325" class="contact-link" target="_blank" rel="noopener">LinkedIn</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2026 Yanzhi (E) Yang. All rights reserved.</p>
+        <p>&copy; 2026 Yanzhi (Elliot) Yang. All rights reserved.</p>
     </footer>
 
     <script>
