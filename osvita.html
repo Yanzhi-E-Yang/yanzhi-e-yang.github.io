@@ -55,36 +55,24 @@
 
   /* ── HERO ── */
   .hero {
-    padding: 160px 48px 100px;
+    padding-top: 80px;
     max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end;
   }
-  .hero-label {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .hero-label::before {
-    content: ''; width: 32px; height: 1px; background: var(--accent);
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(52px, 6vw, 80px); line-height: 1.05;
-    color: var(--slate); letter-spacing: -0.02em;
-    margin-bottom: 28px;
-  }
-  .hero h1 em {
-    font-style: italic; color: var(--blue-soft);
-  }
-  .hero-tagline {
-    font-size: 17px; line-height: 1.7; color: var(--slate-mid);
-    font-weight: 300; max-width: 420px;
-  }
+  .hero-image { width: 100%; }
+  .hero-image img { width: 100%; height: auto; display: block; }
   .hero-meta {
-    display: flex; flex-direction: column; gap: 24px;
-    padding-bottom: 8px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 0 48px;
+    border-top: 1px solid rgba(44,51,64,0.1);
+    border-bottom: 1px solid rgba(44,51,64,0.1);
   }
-  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-item {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 28px 20px;
+    border-right: 1px solid rgba(44,51,64,0.1);
+  }
+  .meta-item:first-child { padding-left: 0; }
+  .meta-item:last-child { border-right: none; }
   .meta-label {
     font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--accent); font-weight: 500;
@@ -562,7 +550,9 @@
     }
   }
     nav { padding: 16px 24px; }
-    .hero { grid-template-columns: 1fr; padding: 120px 24px 64px; gap: 48px; }
+    .hero { padding-top: 64px; }
+    .hero-meta { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+    .meta-item:nth-child(2) { border-right: none; }
     .overview-inner { grid-template-columns: 1fr; }
     .section { padding: 56px 24px; }
     .problem-grid, .features-grid { grid-template-columns: 1fr; }
@@ -586,11 +576,11 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="fade-in">
-    <div class="hero-label">Thesis Project · 2024–2025</div>
-    <h1>OsVita<br><em>健康小骨</em></h1>
-    <p class="hero-tagline">A mobile health companion designed to make bone health visible, habitual, and socially shared — through movement and daily ritual.</p>
-  </div>
+  <figure class="hero-image fade-in">
+    <img src="Image/OsVita/Hero%20Page.png"
+         alt="OsVita — A long-term companion for preventive bone health through shared movement"
+         fetchpriority="high" />
+  </figure>
   <div class="hero-meta fade-in">
     <div class="meta-item">
       <span class="meta-label">My Role</span>
