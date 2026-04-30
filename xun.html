@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xun — An animated short film on Lu Xun | Yanzhi (Elliot) Yang</title>
+<meta name="description" content="Xun is an animated short film that translates the literary world of Lu Xun into image, motion, and emotion. A BFA thesis film at Tsinghua University, 2024. A case study in visual translation for Health Tech communication.">
+<meta property="og:title" content="Xun 《迅》 — An animated short film on Lu Xun">
+<meta property="og:description" content="An animated short film that translates the literary world of Lu Xun into image, motion, and emotion.">
+<meta property="og:image" content="Image/XUN/The%20Pastry%20Shop%20of%20Dao%20Xiang%20Cun.png">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;0,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Shared portfolio chrome */
+    --slate: #2C3340;
+    --slate-mid: #4A5568;
+    --white: #FEFCF8;
+
+    /* Inner project palette */
+    --deep-blue: #1F4E79;
+    --mid-blue: #5B8DBE;
+    --pale-blue: #EAF1F8;
+    --paper-cool: #F4F8FC;
+
+    /* Xun-specific accents */
+    --xun-red: #C8362C;
+    --xun-ochre: #D4923B;
+    --paper-warm: #F5EFE2;   /* shot-case backgrounds */
+
+    /* Type */
+    --hairline: #CCCCCC;
+    --text-heading: #1A1A1A;
+    --text-body: #3A3A3A;
+    --text-secondary: #6B6B6B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(44,51,64,0.08);
+  }
+  nav .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; color: var(--slate);
+    text-decoration: none; letter-spacing: 0.02em;
+  }
+  nav .back {
+    font-size: 13px; font-weight: 400; color: var(--slate-mid);
+    text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  nav .back:hover { color: var(--xun-red); }
+  nav .back::before { content: '←'; font-size: 15px; }
+
+  /* ── HERO (full-bleed still, text over gradient) ── */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+    background: var(--deep-blue);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  .hero-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,18,30,0.88) 0%,
+      rgba(10,18,30,0.55) 40%,
+      rgba(10,18,30,0.15) 75%,
+      transparent 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    width: 100%; max-width: 1200px; margin: 0 auto;
+    padding: 0 48px 72px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--xun-ochre); font-weight: 500; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--xun-ochre);
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(72px, 10vw, 120px);
+    color: white; line-height: 0.95;
+    letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  .hero-cn {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: rgba(255,255,255,0.6);
+    font-style: italic; margin-bottom: 28px; letter-spacing: 0.06em;
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px; color: rgba(255,255,255,0.82);
+    font-style: italic; line-height: 1.45; max-width: 560px;
+    margin-bottom: 36px;
+  }
+  .hero-meta-strip {
+    display: flex; gap: 0; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 24px;
+    max-width: 780px;
+  }
+  .hero-meta-item {
+    padding: 0 32px 0 0;
+    margin-right: 32px;
+    border-right: 1px solid rgba(255,255,255,0.18);
+  }
+  .hero-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+  .hero-meta-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--xun-ochre); font-weight: 500; margin-bottom: 5px;
+  }
+  .hero-meta-value {
+    font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.45; font-weight: 300;
+  }
+
+  /* ── SHARED SECTION SHELL ── */
+  .section { padding: 96px 48px; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-narrow { max-width: 700px; margin: 0 auto; }
+  .section-tinted { background: var(--paper-cool); }
+  .section-warm { background: var(--paper-warm); position: relative; }
+  .section-warm::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: 0.5;
+  }
+  .section-label {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 500; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; width: 28px; height: 1px; background: var(--mid-blue); }
+  .section-label .beat { color: var(--deep-blue); font-weight: 600; }
+  .section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 3.4vw, 42px); color: var(--text-heading);
+    letter-spacing: -0.01em; line-height: 1.18; margin-bottom: 32px;
+  }
+  .section h2 em { font-style: italic; color: var(--deep-blue); }
+  .lede {
+    font-size: 18px; line-height: 1.7; color: var(--text-body);
+    margin-bottom: 32px; font-weight: 300;
+  }
+  .body-copy p {
+    font-size: 16px; line-height: 1.85; color: var(--text-body);
+    margin-bottom: 20px; font-weight: 300;
+  }
+  .body-copy p:last-child { margin-bottom: 0; }
+  .body-copy em { color: var(--deep-blue); font-style: italic; }
+  .body-copy strong { color: var(--text-heading); font-weight: 600; }
+
+  /* ── VIDEO (facade pattern) ── */
+  .film-wrap { max-width: 1100px; margin: 0 auto; }
+  .film-label {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--deep-blue); font-weight: 500; margin-bottom: 18px;
+    text-align: center;
+  }
+  .film-frame {
+    position: relative; width: 100%; aspect-ratio: 16/9;
+    background: #0d1a26; overflow: hidden; border-radius: 4px;
+    box-shadow: 0 30px 64px -24px rgba(31,78,121,0.35);
+    cursor: pointer;
+  }
+  .film-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .film-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: transform 0.4s ease;
+  }
+  .film-frame:hover .film-poster { transform: scale(1.02); }
+  .film-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, rgba(13,26,38,0.05), rgba(13,26,38,0.45));
+    pointer-events: none;
+  }
+  .film-play {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: rgba(255,255,255,0.94); color: var(--deep-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; padding-left: 6px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    transition: transform 0.3s, background 0.3s;
+  }
+  .film-frame:hover .film-play { transform: scale(1.06); background: white; }
+  .film-play-label {
+    margin-top: 16px; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: white; font-weight: 500;
+  }
+  .film-note {
+    margin-top: 14px; font-size: 12px; color: var(--text-secondary);
+    font-style: italic; text-align: center;
+  }
+
+
+  /* ── CHALLENGE ── */
+  .ornament {
+    width: 32px; height: 1px;
+    background: var(--xun-red);
+    margin: 32px 0;
+  }
+
+  /* ── METHOD ── */
+  .method-blocks {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .method-item {
+    display: grid; grid-template-columns: 40px 1fr;
+    gap: 28px; align-items: start;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .method-item:first-child { border-top: 1px solid var(--hairline); }
+  .method-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px; color: var(--xun-red); line-height: 1.1;
+    font-feature-settings: "tnum";
+    padding-top: 2px;
+  }
+  .method-text h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; color: var(--text-heading);
+    margin-bottom: 12px; letter-spacing: -0.005em; line-height: 1.25;
+  }
+  .method-text p {
+    font-size: 15.5px; line-height: 1.8; color: var(--text-body); font-weight: 300;
+  }
+  .method-text em { color: var(--deep-blue); font-style: italic; }
+
+  /* ── SHOT CASES ── */
+  .shot-case {
+    padding: 64px 0;
+    border-bottom: 1px solid rgba(44,51,64,0.12);
+    position: relative;
+  }
+  .shot-case:last-child { border-bottom: none; }
+  .shot-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: white;
+    background: var(--xun-red); padding: 4px 14px 3px;
+    margin-bottom: 14px;
+  }
+  .shot-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: var(--text-heading);
+    letter-spacing: -0.01em; line-height: 1.2;
+    margin-bottom: 32px;
+  }
+  .shot-image {
+    width: 100%; margin-bottom: 32px;
+    border-radius: 2px; overflow: hidden;
+  }
+  .shot-image img { width: 100%; height: auto; display: block; }
+  .shot-breakdown {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    background: rgba(44,51,64,0.1);
+  }
+  .shot-cell {
+    background: white; padding: 24px 20px;
+  }
+  .shot-cell-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--xun-red);
+    margin-bottom: 10px;
+  }
+  .shot-cell-label.move { color: var(--deep-blue); }
+  .shot-cell-label.reason { color: var(--xun-ochre); }
+  .shot-cell p {
+    font-size: 13.5px; line-height: 1.75; color: var(--text-body); font-weight: 300;
+  }
+  .shot-cell p em { font-style: italic; }
+
+  /* ── GALLERY ── */
+  .gallery-scroll {
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px 48px 36px;
+    scrollbar-width: thin;
+  }
+  .gallery-strip { display: flex; gap: 28px; }
+  .gallery-item {
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+    width: min(78vw, 960px);
+    border-radius: 3px; overflow: hidden;
+  }
+  .gallery-item img { width: 100%; height: auto; display: block; }
+  .gallery-hint {
+    text-align: center; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-secondary); margin-top: 14px;
+  }
+  .gallery-hint::before { content: '← '; }
+  .gallery-hint::after { content: ' →'; }
+  .gallery-note {
+    max-width: 1100px; margin: 28px auto 0;
+    padding: 0 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 15px; color: var(--text-secondary);
+    text-align: center; line-height: 1.6;
+  }
+  .gallery-note a { color: var(--deep-blue); }
+
+  /* ── PRODUCTION NOTE ── */
+  .callout {
+    background: var(--pale-blue);
+    border-left: 3px solid var(--deep-blue);
+    padding: 28px 32px; margin: 28px 0;
+  }
+  .callout-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--deep-blue); font-weight: 600; margin-bottom: 10px;
+  }
+  .callout p {
+    font-size: 15px; line-height: 1.75; color: var(--text-body); font-weight: 300;
+  }
+
+  /* ── NOW WHAT ── */
+  .capability-list { display: flex; flex-direction: column; gap: 0; }
+  .capability-item {
+    display: grid; grid-template-columns: 44px 1fr;
+    gap: 28px; align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .capability-item:last-child { border-bottom: none; }
+  .capability-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px; color: var(--xun-red); line-height: 1;
+    padding-top: 4px; font-feature-settings: "tnum";
+  }
+  .capability-lead { color: var(--xun-red); font-weight: 600; }
+  .capability-text h3 {
+    font-size: 17px; font-weight: 600; color: var(--text-heading);
+    margin-bottom: 8px; letter-spacing: 0.01em;
+  }
+  .capability-text p {
+    font-size: 15px; line-height: 1.7; color: var(--text-body); font-weight: 300;
+  }
+
+  /* ── RESOURCES ── */
+  .resources-row {
+    display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+    margin-top: 24px;
+  }
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+    border: 1px solid var(--hairline); background: white;
+    color: var(--text-heading); font-size: 13.5px; letter-spacing: 0.04em;
+    font-weight: 500; text-decoration: none; border-radius: 999px;
+    transition: all 0.25s ease;
+  }
+  .resource-btn:hover { border-color: var(--deep-blue); color: var(--deep-blue); transform: translateY(-2px); }
+  .resource-btn.primary {
+    background: var(--deep-blue); color: white; border-color: var(--deep-blue);
+  }
+  .resource-btn.primary:hover {
+    background: #163d61; box-shadow: 0 12px 24px -8px rgba(31,78,121,0.4);
+    transform: translateY(-2px);
+  }
+  .resource-btn::after { content: '↗'; font-size: 14px; opacity: 0.7; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    max-width: 1200px; margin: 0 auto;
+    padding: 64px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--hairline);
+  }
+  .footer-left {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px; color: var(--text-heading); letter-spacing: -0.01em;
+  }
+  .footer-left span {
+    color: var(--text-secondary); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; display: block; margin-top: 4px; font-weight: 300;
+  }
+  .next-link {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text-secondary); text-decoration: none;
+    letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s;
+  }
+  .next-link:hover { color: var(--xun-red); }
+  .next-link::after { content: '→'; font-size: 15px; }
+
+  /* ── FADE IN ── */
+  .fade { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .shot-breakdown { grid-template-columns: 1fr; gap: 0; }
+    .hero-meta-strip { gap: 0; }
+    .hero-meta-item { padding: 0 0 16px; margin: 0 0 16px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .hero-meta-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .section { padding: 64px 24px; }
+    .hero-content { padding: 0 24px 56px; }
+    .hero h1 { font-size: 64px; }
+    .method-item { grid-template-columns: 1fr; gap: 12px; }
+    .method-num { font-size: 20px; }
+    .gallery-scroll { padding: 12px 24px 28px; }
+    .gallery-item { width: 88vw; }
+    .gallery-note { padding: 0 24px; }
+    .page-footer { flex-direction: column; gap: 24px; padding: 40px 24px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Yanzhi (Elliot) Yang</a>
+  <a href="index.html#portfolio" class="back">All Projects</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <img class="hero-bg" src="Image/XUN/The%20Pastry%20Shop%20of%20Dao%20Xiang%20Cun.png" alt="" aria-hidden="true" fetchpriority="high">
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Animated Short Film · BFA Thesis · 2024</div>
+    <h1>Xun</h1>
+    <p class="hero-cn">《迅》</p>
+    <p class="hero-tagline">An animated short film that translates the literary world of Lu Xun into image, motion, and emotion.</p>
+    <div class="hero-meta-strip">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Role</div>
+        <div class="hero-meta-value">Director · Animator · Writer</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Institution</div>
+        <div class="hero-meta-value">Tsinghua University<br>Academy of Arts & Design</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Advisor</div>
+        <div class="hero-meta-value">Assoc. Prof. Chen Lei</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Year</div>
+        <div class="hero-meta-value">2024 · BFA Thesis Film</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- THE FILM (video first — before any explanation) -->
+<section class="section">
+  <div class="film-wrap fade">
+    <p class="film-label">Watch the film — approximately three minutes.</p>
+    <div class="film-frame" id="film-trigger" role="button" tabindex="0" aria-label="Play Xun, animated short film on Bilibili">
+      <img class="film-poster" src="Image/XUN/The%20Tear%20and%20the%20Bud2.jpg" alt="A flower bud opening upward against a dark, crimson-toned sky — from the closing sequence of Xun." loading="lazy">
+      <div class="film-overlay">
+        <div class="film-play" aria-hidden="true">▶</div>
+        <div class="film-play-label">Play Film</div>
+      </div>
+    </div>
+    <p class="film-note">Hosted on Bilibili · <a href="https://www.bilibili.com/video/BV1Tms8eSEPq/" target="_blank" rel="noopener" style="color:var(--deep-blue)">open in Bilibili directly</a> if the player does not load</p>
+  </div>
+</section>
+
+<!-- THE CHALLENGE -->
+<section class="section section-tinted">
+  <div class="section-inner">
+    <div class="section-narrow fade">
+      <div class="section-label"><span class="beat">The Challenge</span> · Why this subject was hard</div>
+      <h2>A writer the public respects and rarely reads.</h2>
+      <div class="body-copy">
+        <p>Lu Xun (1881–1936) is one of the most consequential writers in modern Chinese literature — a critic, satirist, and reformer whose work shaped how generations of Chinese readers think about their own society. He is also, paradoxically, a writer most younger Chinese readers have come to avoid: required in textbooks, weighted down by exams, frozen in the public imagination as a stern figure with a sharp pen. His full range — the affection, the absurdity, the appetite for sweets, the stubborn humor — rarely survives the translation into the classroom.</p>
+        <div class="ornament"></div>
+        <p>Decades of visual adaptations have not helped: most reach for the same heavy palette, the same realist register, the same selection of his darkest stories. The result is a writer the public respects and rarely reads. <em>Xun</em> was made to test a different hypothesis: that bright color, dream-logic, and image-driven storytelling could give a contemporary audience a way back into a body of work they have learned to keep at arm's length.</p>
+        <p>The page is structured for an international Health Tech audience who may not know Lu Xun. They do not need to. The film's method — taking a subject the public avoids and making people want to look at it — is the same method Health Tech needs for behavior change, stigma reduction, and patient education.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE METHOD -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label fade"><span class="beat">The Method</span> · Three working principles</div>
+      <h2 class="fade">Image-logic over text-logic: how the film is structured, and why it transfers to <em>any</em> complex subject.</h2>
+    </div>
+    <div class="section-narrow">
+      <div class="method-blocks fade">
+        <div class="method-item">
+          <div class="method-num">I</div>
+          <div class="method-text">
+            <h3>Image-logic over text-logic</h3>
+            <p>Most adaptations of literary work are organized by the original's plot. <em>Xun</em> is not. The film is organized by the visual and emotional through-line of Lu Xun's own writing — the recurring images of fragmented light, sudden cold, falling, biting, opening doors — not by the chronology of his life or the order of his books. A scene transitions to the next not because the next event happened, but because an emotion or a movement carries the eye there. This is the working principle Patrick Wells calls "subjective relevance": build the adaptation around the viewer's felt connection to the work, not around the source's structural skeleton.</p>
+          </div>
+        </div>
+        <div class="method-item">
+          <div class="method-num">II</div>
+          <div class="method-text">
+            <h3>Non-linear time as a design choice, not a difficulty</h3>
+            <p>The film runs without timestamps and without captions naming which story is being shown. The young Lu Xun fights a pig under a tamarind tree; a hairpin becomes a row of teeth; a stack of pastries collapses into the famous human-blood mantou; a book eats a child and becomes an iron house. Audiences who know Lu Xun's work recognize the references; audiences who do not still feel the structure. This is the design bet: that the felt logic of one writer's whole imagination can be conveyed without the prose.</p>
+          </div>
+        </div>
+        <div class="method-item">
+          <div class="method-num">III</div>
+          <div class="method-text">
+            <h3>Color and grain as emotional infrastructure</h3>
+            <p><em>Xun</em> deliberately breaks with the grayscale convention of Lu Xun adaptations. Saturated reds, warm yellows, deep blues, and a printed-paper grain make the film feel like a vintage comic book — a register that signals affection, play, and seriousness simultaneously. The choice is not decorative: it is an argument that Lu Xun's writing itself contains all of these tones, and that previous adaptations have under-served his range.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE EVIDENCE: FOUR SHOT CASES -->
+<section class="section section-warm">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label fade"><span class="beat">The Evidence</span> · Four shots, fully decoded</div>
+      <h2 class="fade">Every choice can be sourced and defended. This is the same rigor Health Tech needs from anyone designing patient-facing content.</h2>
+    </div>
+
+    <!-- Case 1 -->
+    <div class="shot-case fade">
+      <div class="shot-badge">Shots 02 – 03</div>
+      <h3 class="shot-title">The Pastry Shop of Dao Xiang Cun</h3>
+      <div class="shot-image">
+        <img src="Image/XUN/The%20Pastry%20Shop%20of%20Dao%20Xiang%20Cun.png" alt="Lu Xun splayed against a vivid red background, surrounded by illustrations of named pastries from his diaries — yang-geng, lotus-seed porridge, persimmon-frost cakes, and more." loading="lazy">
+      </div>
+      <div class="shot-breakdown">
+        <div class="shot-cell">
+          <div class="shot-cell-label">Source text</div>
+          <p>Lu Xun's diaries from 1913–1915 record fifteen separate visits to Dao Xiang Cun, the first "Southern-style pastry shop" in Beijing. The stickier truth: the man known to the public for sharp political prose was, privately, a documented sweets enthusiast.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label move">Design move</div>
+          <p>After Lu Xun trips and a tooth flies free, the screen floods with pastries — yang-geng, lotus-seed porridge, sticky rice in white sugar, persimmon-frost cakes, lun-jiao gao, and a few generic moon cakes added for visual rhythm. Most of the named pastries appear in the actual diaries.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label reason">Reason</div>
+          <p>The shot operates as a single visual joke that does serious work: it argues, in three seconds, that the figure the audience thinks they know is incomplete — without a line of dialogue. <em>For Health Tech:</em> the same move — a single delightful visual that re-frames a person the audience thought they had pegged — is exactly what patient-facing content needs when fighting stigma.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 2 -->
+    <div class="shot-case fade">
+      <div class="shot-badge">Shots 07 – 11</div>
+      <h3 class="shot-title">The Twenty-Four Filial Exemplars</h3>
+      <div class="shot-image" style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+        <img src="Image/XUN/24FilialExemplars_1.jpg" alt="A scene from the Twenty-Four Filial Exemplars: a distressed father prepares to bury an infant, rendered in a warm ochre palette on aged paper." loading="lazy" style="width:100%;height:auto;display:block;">
+        <img src="Image/XUN/24FilialExemplars_2.jpg" alt="Lu Xun leaps out of a book-page as an old man in festive red dress performs an awkward dance for his aged parents — the conflict escalating with each turn of the page." loading="lazy" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="shot-breakdown">
+        <div class="shot-cell">
+          <div class="shot-cell-label">Source text</div>
+          <p>Lu Xun's essay <em>The Twenty-Four Filial Exemplars</em> critiques three classical "filial piety" tales: an old man dressing as a child to amuse his parents, a son lying on a frozen river to thaw it for his mother, and a father preparing to bury his own infant alive to save resources for his elder relative. Lu Xun grew increasingly bitter across each.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label move">Design move</div>
+          <p>Lu Xun himself enters the book and meets each scene. The conflict escalates per page: the first scene is merely awkward; in the second, the freezing man Lu Xun tries to help knocks him out of the page; in the third, a couple casually tries to bury Lu Xun and the baby together. He flees with the child.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label reason">Reason</div>
+          <p>The film does not tell the viewer that Lu Xun's critique sharpens across the three tales — it makes the viewer <em>feel</em> the sharpening by escalating the on-screen conflict in lockstep with the essay's rising contempt. <em>For Health Tech:</em> the same principle turns a clinical guideline ("these three behaviors progressively worsen outcomes") into something a patient viscerally understands rather than nods through.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 3 -->
+    <div class="shot-case fade">
+      <div class="shot-badge">Shots 16 – 17</div>
+      <h3 class="shot-title">The Iron House</h3>
+      <div class="shot-image">
+        <img src="Image/XUN/The%20Iron%20House.PNG" alt="A glowing cube-form bound with chains, suspended against pure black — the iron house from Lu Xun's Call to Arms, assembled from the folded red page." loading="lazy">
+      </div>
+      <div class="shot-breakdown">
+        <div class="shot-cell">
+          <div class="shot-cell-label">Source text</div>
+          <p>Three of Lu Xun's most famous images, drawn from different works: the cry of "eat people" from <em>A Madman's Diary</em>; the closing plea "save the children" from the same; and the iron-house metaphor from the preface to <em>Call to Arms</em> — a sealed iron room full of sleeping people who will suffocate; should one shout to wake them, knowing they cannot escape?</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label move">Design move</div>
+          <p>Lu Xun, fleeing, looks down to find the child gone. He turns to see the giant book in front of him eat the child. The page bleeds red and contracts into a long red form, then folds itself into a cube, which is then bound with iron strips into a sealed iron house.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label reason">Reason</div>
+          <p>Three textual images from three different sources are sequenced into a single continuous visual transformation — the most ambitious twelve seconds in the film. <em>For Health Tech:</em> this is the move that turns a multi-factor health concept (genetics + environment + behavior) into one coherent visual story instead of three disconnected explainers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Case 4 -->
+    <div class="shot-case fade">
+      <div class="shot-badge">Shots 34 – 37</div>
+      <h3 class="shot-title">The Tear and the Bud</h3>
+      <div class="shot-image" style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+        <img src="Image/XUN/The%20Tear%20and%20the%20Bud1.jpg" alt="A hand reaches toward a skeleton lying in a field of red blossoms; a small red flower grows from the skeleton's chest — the tear about to fall." loading="lazy" style="width:100%;height:auto;display:block;">
+        <img src="Image/XUN/The%20Tear%20and%20the%20Bud2.jpg" alt="A flower bud opens upward against a crimson sky, silhouetted by dark foliage — the bud becoming a waking young person." loading="lazy" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="shot-breakdown">
+        <div class="shot-cell">
+          <div class="shot-cell-label">Source text</div>
+          <p>Lu Xun: "She shivered in the cold night air, dreaming of the coming spring… the gaunt poet wiping his tears onto her last petal…" (<em>Autumn Night</em>). And from <em>The Mentor</em>: "There are those who want to move forward."</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label move">Design move</div>
+          <p>A tear from the kneeling Lu Xun falls into the eye-socket of a skeleton, lands on a flower bud growing inside, and the bud opens. The opening becomes a yawning young person waking up. More young people wake. They are dazzled by light from across the floor: a pen has propped open a heavy door. A maple leaf with a worm-hole drifts in.</p>
+        </div>
+        <div class="shot-cell">
+          <div class="shot-cell-label reason">Reason</div>
+          <p>The visual causal chain (tear → bud → opening → youth waking → light → propped door → leaf) must convey, in pure image, that one writer's grief becomes the next generation's awakening. No narration, no on-screen text. <em>For Health Tech:</em> causal chains delivered visually outperform causal chains delivered verbally for almost every patient-education task that has been measured. This shot is proof of fluency in that mode.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STILLS GALLERY -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label fade" style="max-width:1100px; margin: 0 auto 0;"><span class="beat">Gallery</span> · From the film</div>
+  </div>
+  <div class="gallery-scroll" style="margin-top: 28px;">
+    <div class="gallery-strip">
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/The%20Pastry%20Shop%20of%20Dao%20Xiang%20Cun.png" alt="Lu Xun surrounded by named pastries from his diaries, arms spread wide against a vivid red background." loading="lazy">
+      </figure>
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/24FilialExemplars_2.jpg" alt="Lu Xun leaps sideways out of a book-page as an old man dances awkwardly for his elderly parents — the first of three escalating scenes." loading="lazy">
+      </figure>
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/24FilialExemplars_1.jpg" alt="A father prepares to bury his infant in a spare, anguished scene rendered in ochre and brown on aged paper." loading="lazy">
+      </figure>
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/The%20Iron%20House.PNG" alt="The iron house: a cube wrapped in chains, glowing against absolute black." loading="lazy">
+      </figure>
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/The%20Tear%20and%20the%20Bud1.jpg" alt="A hand reaches toward a skeleton in a field of red blossoms; a small flower grows from the skeleton's chest." loading="lazy">
+      </figure>
+      <figure class="gallery-item fade">
+        <img src="Image/XUN/The%20Tear%20and%20the%20Bud2.jpg" alt="A flower bud opens upward into a crimson sky — the bud becoming a waking young person." loading="lazy">
+      </figure>
+    </div>
+  </div>
+  <p class="gallery-hint">Drag to scroll</p>
+  <p class="gallery-note">For frame-by-frame correspondences with Lu Xun's writing, see the <a href="#" id="thesis-link">thesis paper</a> — "The Visual Expression of Lu Xun's Themes," Yang Yanzhi, Tsinghua University, 2024.</p>
+</section>
+
+<!-- PRODUCTION NOTE -->
+<section class="section section-tinted">
+  <div class="section-inner">
+    <div class="section-narrow fade">
+      <div class="section-label"><span class="beat">Production Note</span> · Honest scope</div>
+      <h2>A thesis film, made by one person, over fifteen months.</h2>
+      <div class="callout">
+        <div class="callout-label">About the project</div>
+        <p><em>Xun</em> was the candidate's BFA thesis film at Tsinghua University Academy of Arts &amp; Design, completed in June 2024 under the supervision of Associate Professor Chen Lei. The film was conceived, written, directed, and animated by the candidate, with assistance from a fellow student (Chen Siyu) on long animation days. The accompanying thesis paper, "The Visual Expression of Lu Xun's Themes — The Creative Practice of the Animated Work Xun," examines each major shot's textual sources and design rationale; it is available as a PDF below for readers who want to look further.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOW WHAT -->
+<section class="section">
+  <div class="section-inner section-narrow">
+    <div class="section-label fade"><span class="beat">Now What</span> · For Health Tech work</div>
+    <h2 class="fade">From a film about a writer to the practice of <em>visual translation</em>.</h2>
+    <p class="lede fade">Five capabilities this film demonstrates, written for the Health Tech, digital health, and health-communication teams I'm looking to join.</p>
+    <div class="capability-list fade">
+      <div class="capability-item">
+        <div class="capability-num">01</div>
+        <div class="capability-text">
+          <h3>Visual translation of complex content</h3>
+          <p>I take research, clinical guidance, or behavioral concepts that are correct on paper but inert on the page, and render them in image and motion that audiences engage with on first viewing.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">02</div>
+        <div class="capability-text">
+          <h3>Image-logic over text-logic</h3>
+          <p>I structure communication around what the eye and the body follow, not around what the outline says. This is the working method for content that needs to land emotionally before it lands cognitively.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">03</div>
+        <div class="capability-text">
+          <h3>Source-grounded creative work</h3>
+          <p>Every visual decision in <em>Xun</em> maps to a specific text. The same discipline applied to health communication means every visual claim maps to a specific clinical source — a non-negotiable for the field.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">04</div>
+        <div class="capability-text">
+          <h3>Stigma-aware framing</h3>
+          <p>Experience treating a subject the public has learned to avoid — a stern textbook author, a difficult illness, a stigmatized behavior — by giving it back its full humanity, including humor and ordinariness, without flattening its weight.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">05</div>
+        <div class="capability-text">
+          <h3>End-to-end authorship under deadline</h3>
+          <p>Fifteen months from concept to a finished, defended thesis film, holding the work to a publishable standard with a small team and a real release date.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="section section-tinted">
+  <div class="section-inner section-narrow" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;"><span class="beat">Resources</span> · Watch, read</div>
+    <h2>Find the film.</h2>
+    <div class="resources-row">
+      <a class="resource-btn primary" href="https://www.bilibili.com/video/BV1Tms8eSEPq/" target="_blank" rel="noopener">Watch on Bilibili</a>
+      <a class="resource-btn" href="#" id="thesis-pdf-link" target="_blank" rel="noopener">Thesis paper (PDF, Chinese)</a>
+    </div>
+    <p style="margin-top: 20px; font-size: 13px; color: var(--text-secondary); font-style: italic;">Thesis: "The Visual Expression of Lu Xun's Themes — The Creative Practice of the Animated Work Xun." Tsinghua University Academy of Arts &amp; Design, June 2024. Document in Chinese; an English summary is available on request.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-left">
+    Xun · 《迅》
+    <span>BFA Thesis Film, 2024 · Yanzhi (Elliot) Yang · Tsinghua University</span>
+  </div>
+  <a href="shuis-odyssey.html" class="next-link">Shui's Odyssey</a>
+</footer>
+
+<script>
+  // Lazy-load Bilibili only on click (facade pattern)
+  (function() {
+    const trigger = document.getElementById('film-trigger');
+    if (!trigger) return;
+    const activate = () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = '//player.bilibili.com/player.html?bvid=BV1Tms8eSEPq&autoplay=1&high_quality=1';
+      iframe.title = 'Xun — animated short film';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'eager';
+      iframe.scrolling = 'no';
+      trigger.innerHTML = '';
+      trigger.appendChild(iframe);
+      trigger.style.cursor = 'default';
+    };
+    trigger.addEventListener('click', activate);
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  })();
+
+  // Fade-in on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
