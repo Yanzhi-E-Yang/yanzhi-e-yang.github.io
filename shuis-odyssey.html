@@ -155,13 +155,15 @@
   .section-label::before {
     content: ''; width: 28px; height: 1px; background: var(--mid-blue);
   }
-  .prop-icon {
-    width: 30px; height: 30px;
+  .prop-deco {
+    position: absolute;
+    height: auto;
     object-fit: contain;
-    opacity: 0.82;
-    flex-shrink: 0;
-    margin-left: 4px;
+    opacity: 0.62;
+    pointer-events: none;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.14));
   }
+  @media (max-width: 768px) { .prop-deco { display: none; } }
   .section-label .step-num {
     color: var(--deep-blue); font-weight: 600; letter-spacing: 0.06em;
   }
@@ -609,9 +611,10 @@
 <!-- WHY -->
 <section class="section section-tinted">
   <div class="section-inner">
-    <div class="section-narrow">
-      <div class="section-label"><span class="step-num">Why</span> · The case for the project<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/1-1%E7%9C%BC%E9%95%9C.png" alt="" aria-hidden="true" loading="lazy" /></div>
+    <div class="section-narrow" style="position: relative;">
+      <div class="section-label"><span class="step-num">Why</span> · The case for the project</div>
       <h2>Health communication tells the public <em>what</em> dementia is. Very little teaches them what it <em>feels like</em>.</h2>
+      <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/1-1%E7%9C%BC%E9%95%9C.png" alt="" aria-hidden="true" loading="lazy" style="width:92px; right:-6px; top:10px; transform:rotate(11deg);" />
     </div>
 
     <div class="stat-row fade">
@@ -673,10 +676,11 @@
 <!-- HOW -->
 <section class="section section-tinted">
   <div class="section-inner">
-    <div class="section-narrow">
-      <div class="section-label"><span class="step-num">How</span> · Design rationale &amp; process<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-3%E6%80%80%E8%A1%A8.png" alt="" aria-hidden="true" loading="lazy" /></div>
+    <div class="section-narrow" style="position: relative;">
+      <div class="section-label"><span class="step-num">How</span> · Design rationale &amp; process</div>
       <h2>Mechanic-to-symptom mapping: every interaction operationalizes a clinical reality.</h2>
       <p class="lede">A Health Tech reader cares less about how the game looks than about whether the candidate can think rigorously about translating clinical concepts into interactive form, lead a team across disciplines, and ship.</p>
+      <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-3%E6%80%80%E8%A1%A8.png" alt="" aria-hidden="true" loading="lazy" style="width:86px; right:-4px; top:6px; transform:rotate(-9deg);" />
     </div>
 
     <div class="fade" style="margin-top: 32px;">
@@ -741,9 +745,10 @@
 <!-- SCREENSHOT GALLERY -->
 <section class="section">
   <div class="section-inner">
-    <div class="section-narrow">
-      <div class="section-label"><span class="step-num">Gallery</span> · From the game<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-1%E7%B0%AA%E5%AD%90.png" alt="" aria-hidden="true" loading="lazy" /></div>
+    <div class="section-narrow" style="position: relative;">
+      <div class="section-label"><span class="step-num">Gallery</span> · From the game</div>
       <h2>Hand-painted scenes that ask the player to look twice.</h2>
+      <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-1%E7%B0%AA%E5%AD%90.png" alt="" aria-hidden="true" loading="lazy" style="width:72px; right:2px; top:0; transform:rotate(14deg);" />
     </div>
   </div>
   <div class="gallery-wrap">
@@ -780,9 +785,10 @@
 <!-- RECEPTION -->
 <section class="section section-tinted">
   <div class="section-inner">
-    <div class="section-narrow">
-      <div class="section-label"><span class="step-num">So What</span> · Reception &amp; impact<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-2%E5%85%A8%E5%AE%B6%E7%A6%8F.png" alt="" aria-hidden="true" loading="lazy" /></div>
+    <div class="section-narrow" style="position: relative;">
+      <div class="section-label"><span class="step-num">So What</span> · Reception &amp; impact</div>
       <h2>Released to a real audience. Heard back from real people.</h2>
+      <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-2%E5%85%A8%E5%AE%B6%E7%A6%8F.png" alt="" aria-hidden="true" loading="lazy" style="width:98px; right:-8px; top:4px; transform:rotate(-5deg);" />
     </div>
 
     <div class="reception-stats fade">
@@ -816,9 +822,10 @@
 
 <!-- NOW WHAT -->
 <section class="section">
-  <div class="section-inner section-narrow">
-    <div class="section-label"><span class="step-num">Now What</span> · For Health Tech work<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-1%E6%89%8B%E7%94%B5%E7%AD%92.png" alt="" aria-hidden="true" loading="lazy" /></div>
+  <div class="section-inner section-narrow" style="position: relative;">
+    <div class="section-label"><span class="step-num">Now What</span> · For Health Tech work</div>
     <h2>From a game about memory to the future of <em>health communication</em>.</h2>
+    <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-1%E6%89%8B%E7%94%B5%E7%AD%92.png" alt="" aria-hidden="true" loading="lazy" style="width:82px; right:0; top:8px; transform:rotate(7deg);" />
     <p class="lede">Five capabilities this project demonstrates, written for the Health Tech, digital health, aging-care, and patient-advocacy teams I'm looking to join.</p>
 
     <div class="capability-list fade">
@@ -863,9 +870,10 @@
 
 <!-- RESOURCES -->
 <section class="section section-pale">
-  <div class="section-inner section-narrow" style="text-align: center;">
-    <div class="section-label" style="justify-content: center;"><span class="step-num">Resources</span> · Play, watch, read<img class="prop-icon" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-2%E6%89%8B%E5%86%8C.png" alt="" aria-hidden="true" loading="lazy" /></div>
+  <div class="section-inner section-narrow" style="text-align: center; position: relative;">
+    <div class="section-label" style="justify-content: center;"><span class="step-num">Resources</span> · Play, watch, read</div>
     <h2 style="text-align: center;">Find the project.</h2>
+    <img class="prop-deco" src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-2%E6%89%8B%E5%86%8C.png" alt="" aria-hidden="true" loading="lazy" style="width:76px; right:12px; top:0; transform:rotate(-12deg);" />
     <div class="resources-row">
       <a class="resource-btn primary" href="https://store.steampowered.com/app/2808960" target="_blank" rel="noopener">Play on Steam</a>
       <a class="resource-btn" href="https://youtu.be/tBMutOuVpeg" target="_blank" rel="noopener">Watch trailer</a>
