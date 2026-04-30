@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shui's Odyssey — A puzzle game about Alzheimer's | Yanzhi (Elliot) Yang</title>
+<meta name="description" content="Shui's Odyssey is a narrative puzzle game that lets players experience, from the inside, what memory and perception feel like as Alzheimer's disease progresses. A case study in serious games, narrative medicine, and health communication.">
+<meta property="og:title" content="Shui's Odyssey — A puzzle game about Alzheimer's">
+<meta property="og:description" content="A narrative puzzle game about memory, family, and the slow disappearance of a person we love.">
+<meta property="og:image" content="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE1.png">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Outer chrome — continues the portfolio site's restrained tone */
+    --cream: #F5F0E8;
+    --bone: #E8DFD0;
+    --slate: #2C3340;
+    --slate-mid: #4A5568;
+    --white: #FEFCF8;
+
+    /* Inner project palette — Shui's Odyssey */
+    --deep-blue: #1F4E79;
+    --mid-blue: #5B8DBE;
+    --pale-blue: #EAF1F8;
+    --paper: #F4F8FC;
+    --hairline: #CCCCCC;
+    --text-heading: #1A1A1A;
+    --text-body: #3A3A3A;
+    --text-secondary: #6B6B6B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── NAV (matches osvita.html chrome) ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(44,51,64,0.08);
+  }
+  nav .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; color: var(--slate);
+    text-decoration: none; letter-spacing: 0.02em;
+  }
+  nav .back {
+    font-size: 13px; font-weight: 400; color: var(--slate-mid);
+    text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  nav .back:hover { color: var(--deep-blue); }
+  nav .back::before { content: '←'; font-size: 15px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 48px 60px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: center;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 500; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--mid-blue);
+  }
+  .hero-logo {
+    width: 100%; max-width: 280px; height: auto;
+    margin-bottom: 28px; display: block;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(44px, 5vw, 64px); line-height: 1.05;
+    color: var(--text-heading); letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .hero-subtitle-cn {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; color: var(--mid-blue);
+    font-style: italic; margin-bottom: 28px; letter-spacing: 0.04em;
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; line-height: 1.45; color: var(--deep-blue);
+    font-style: italic; max-width: 480px; margin-bottom: 16px;
+  }
+  .hero-positioning {
+    font-size: 15px; line-height: 1.7; color: var(--text-secondary);
+    max-width: 480px; font-weight: 300;
+  }
+  .hero-image {
+    border-radius: 6px; overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(31,78,121,0.25);
+    border: 1px solid rgba(44,51,64,0.06);
+  }
+  .hero-image img {
+    width: 100%; height: auto; display: block;
+  }
+  .hero-meta {
+    margin-top: 48px;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 24px 0;
+  }
+  .hero-meta-item {
+    padding: 0 20px;
+    border-right: 1px solid var(--hairline);
+  }
+  .hero-meta-item:last-child { border-right: none; }
+  .hero-meta-item:first-child { padding-left: 0; }
+  .hero-meta-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 500; margin-bottom: 6px;
+  }
+  .hero-meta-value {
+    font-size: 13.5px; color: var(--text-heading); font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* ── SECTION SHELL ── */
+  .section {
+    padding: 96px 48px;
+  }
+  .section-inner {
+    max-width: 1100px; margin: 0 auto;
+  }
+  .section-narrow {
+    max-width: 720px; margin: 0 auto;
+  }
+  .section-tinted { background: var(--paper); }
+  .section-pale { background: var(--pale-blue); }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 500; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; width: 28px; height: 1px; background: var(--mid-blue);
+  }
+  .section-label .step-num {
+    color: var(--deep-blue); font-weight: 600; letter-spacing: 0.06em;
+  }
+  .section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 3.6vw, 44px); color: var(--text-heading);
+    letter-spacing: -0.01em; line-height: 1.18;
+    margin-bottom: 32px;
+  }
+  .section h2 em { font-style: italic; color: var(--deep-blue); }
+
+  .lede {
+    font-size: 18px; line-height: 1.7; color: var(--text-body);
+    margin-bottom: 32px; font-weight: 300;
+  }
+  .body-copy p {
+    font-size: 16px; line-height: 1.85; color: var(--text-body);
+    margin-bottom: 20px; font-weight: 300;
+  }
+
+  /* ── WHY: stat anchors ── */
+  .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+    margin-bottom: 56px; padding: 24px 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .stat {
+    text-align: left;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 5.6vw, 68px); color: var(--deep-blue);
+    line-height: 1.05; letter-spacing: -0.02em;
+    font-feature-settings: "tnum";
+    margin-bottom: 10px;
+  }
+  .stat-caption {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.55;
+    max-width: 280px;
+  }
+
+  .anchor-image {
+    margin: 40px auto;
+    display: block; max-width: 220px;
+    text-align: center;
+  }
+  .anchor-image img {
+    width: 100%; height: auto; display: block;
+    margin: 0 auto;
+  }
+  .anchor-image figcaption {
+    margin-top: 14px; font-size: 12px; color: var(--text-secondary);
+    font-style: italic; letter-spacing: 0.02em;
+  }
+
+  /* ── TRAILER ── */
+  .trailer-wrap {
+    max-width: 1100px; margin: 0 auto;
+  }
+  .trailer-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .trailer-meta .label {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--deep-blue); font-weight: 500;
+  }
+  .trailer-meta .runtime {
+    font-size: 12px; color: var(--text-secondary); letter-spacing: 0.04em;
+  }
+  .trailer-frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: var(--deep-blue); overflow: hidden; border-radius: 4px;
+    box-shadow: 0 30px 60px -24px rgba(31,78,121,0.3);
+    cursor: pointer;
+  }
+  .trailer-frame iframe {
+    width: 100%; height: 100%; border: 0; display: block;
+  }
+  .trailer-poster {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: transform 0.4s ease;
+  }
+  .trailer-frame:hover .trailer-poster { transform: scale(1.02); }
+  .trailer-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, rgba(31,78,121,0.05), rgba(31,78,121,0.45));
+    color: white; pointer-events: none;
+  }
+  .trailer-play {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: rgba(255,255,255,0.94); color: var(--deep-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; padding-left: 6px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  .trailer-frame:hover .trailer-play {
+    transform: scale(1.06);
+    background: white;
+  }
+  .trailer-overlay-text {
+    margin-top: 18px;
+    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  /* ── HOW: mechanic table ── */
+  .mechanic-row {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .mechanic-row:last-child { border-bottom: 1px solid var(--hairline); }
+  .mechanic-cell {
+    padding: 32px 28px;
+    font-size: 15px; line-height: 1.75; font-weight: 300;
+  }
+  .mechanic-cell.clinical {
+    background: white; color: var(--text-body);
+    border-right: 1px solid var(--hairline);
+  }
+  .mechanic-cell.response {
+    background: var(--pale-blue); color: var(--text-heading);
+  }
+  .mechanic-tag {
+    display: inline-block;
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--deep-blue); font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .mechanic-tag.clinical { color: var(--text-secondary); }
+  .mechanic-cell strong {
+    color: var(--deep-blue); font-weight: 600;
+  }
+
+  /* ── HOW: reveal block ── */
+  .reveal-block {
+    display: grid; grid-template-columns: 1fr 1.1fr;
+    gap: 56px; align-items: center;
+    margin: 64px 0;
+  }
+  .reveal-block .reveal-image {
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 24px 56px -20px rgba(31,78,121,0.3);
+  }
+  .reveal-block .reveal-image img { width: 100%; display: block; }
+  .reveal-block .reveal-text p {
+    font-size: 17px; line-height: 1.75; color: var(--text-body);
+    margin-bottom: 18px; font-weight: 300;
+  }
+  .reveal-block .reveal-text p:first-child {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 21px; color: var(--deep-blue);
+    line-height: 1.55;
+  }
+
+  /* ── HOW: callout ── */
+  .callout {
+    background: var(--pale-blue);
+    border-left: 3px solid var(--deep-blue);
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .callout .callout-label {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--deep-blue); font-weight: 600; margin-bottom: 10px;
+  }
+  .callout p {
+    font-size: 15px; line-height: 1.75; color: var(--text-body);
+    font-weight: 300;
+  }
+
+  .leader-block {
+    margin: 32px 0;
+    padding: 28px 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .leader-block p {
+    font-size: 16px; line-height: 1.8; color: var(--text-body);
+    font-weight: 300;
+  }
+
+  /* ── OBJECT GALLERY ── */
+  .object-intro {
+    text-align: center; margin-bottom: 48px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; color: var(--deep-blue);
+    font-style: italic; letter-spacing: 0.01em;
+  }
+  .object-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    max-width: 880px; margin: 0 auto;
+  }
+  .object-card {
+    background: var(--pale-blue);
+    aspect-ratio: 1 / 1;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; padding: 28px 16px 18px;
+    border-radius: 4px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .object-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px -12px rgba(31,78,121,0.2);
+  }
+  .object-card img {
+    max-width: 70%; max-height: 65%;
+    object-fit: contain; display: block;
+    flex-shrink: 0;
+  }
+  .object-name {
+    margin-top: 14px;
+    font-size: 12.5px; letter-spacing: 0.06em;
+    color: var(--deep-blue); font-weight: 500;
+  }
+
+  /* ── SCREENSHOT GALLERY (horizontal scroll-snap) ── */
+  .gallery-wrap {
+    margin-top: 32px;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px 48px 36px;
+    scrollbar-width: thin;
+  }
+  .gallery-strip {
+    display: flex; gap: 32px; padding: 0;
+  }
+  .gallery-item {
+    scroll-snap-align: center;
+    flex: 0 0 auto;
+    width: min(78vw, 920px);
+  }
+  .gallery-item .frame {
+    overflow: hidden; border-radius: 4px;
+    box-shadow: 0 24px 48px -18px rgba(31,78,121,0.3);
+  }
+  .gallery-item .frame img {
+    width: 100%; height: auto; display: block;
+  }
+  .gallery-item figcaption {
+    margin-top: 14px;
+    font-size: 13px; color: var(--text-secondary);
+    font-style: italic; line-height: 1.6;
+    max-width: 600px;
+  }
+  .gallery-hint {
+    text-align: center; font-size: 11px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-secondary); margin-top: 16px;
+  }
+  .gallery-hint::before { content: '← '; }
+  .gallery-hint::after { content: ' →'; }
+
+  /* ── RECEPTION ── */
+  .reception-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px; margin-bottom: 56px;
+    padding: 28px 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .reception-stats .stat-num {
+    font-size: clamp(40px, 4.4vw, 54px);
+  }
+  .quote-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    margin-bottom: 40px;
+  }
+  .quote-card {
+    background: var(--pale-blue);
+    padding: 32px 28px;
+    border-radius: 4px;
+    position: relative;
+  }
+  .quote-card::before {
+    content: '“';
+    position: absolute; top: 4px; left: 16px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 56px; color: var(--mid-blue);
+    line-height: 1; opacity: 0.6;
+  }
+  .quote-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 17px;
+    line-height: 1.6; color: var(--text-body);
+    margin-top: 16px;
+  }
+  .quote-attr {
+    margin-top: 16px;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mid-blue); font-weight: 500;
+  }
+  .open-note {
+    margin-top: 16px;
+    font-size: 13px; color: var(--text-secondary); font-style: italic;
+    text-align: center;
+  }
+
+  /* ── NOW WHAT ── */
+  .capability-list {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .capability-item {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 28px; align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .capability-item:last-child { border-bottom: none; }
+  .capability-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; color: var(--mid-blue);
+    line-height: 1; padding-top: 4px;
+  }
+  .capability-text h3 {
+    font-size: 17px; font-weight: 600; color: var(--text-heading);
+    margin-bottom: 8px; letter-spacing: 0.01em;
+  }
+  .capability-text p {
+    font-size: 15px; line-height: 1.7; color: var(--text-body);
+    font-weight: 300;
+  }
+
+  /* ── RESOURCES ── */
+  .resources-row {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    justify-content: center; margin-top: 24px;
+  }
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+    border: 1px solid var(--hairline);
+    background: white;
+    color: var(--text-heading);
+    font-size: 13.5px; letter-spacing: 0.04em;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+  }
+  .resource-btn:hover {
+    border-color: var(--deep-blue);
+    color: var(--deep-blue);
+    transform: translateY(-2px);
+  }
+  .resource-btn.primary {
+    background: var(--deep-blue); color: white; border-color: var(--deep-blue);
+  }
+  .resource-btn.primary:hover {
+    background: #163d61; color: white;
+    box-shadow: 0 12px 24px -8px rgba(31,78,121,0.4);
+  }
+  .resource-btn::after { content: '↗'; font-size: 14px; opacity: 0.7; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    max-width: 1200px; margin: 0 auto;
+    padding: 64px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--hairline);
+  }
+  .footer-left {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px; color: var(--text-heading); letter-spacing: -0.01em;
+  }
+  .footer-left span {
+    color: var(--text-secondary); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; display: block; margin-top: 4px; font-weight: 300;
+  }
+  .next-link {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--text-secondary); text-decoration: none;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .next-link:hover { color: var(--deep-blue); }
+  .next-link::after { content: '→'; font-size: 15px; }
+
+  /* ── FADE-IN ── */
+  .fade {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade.in {
+    opacity: 1; transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); gap: 0; padding: 0; border: none; }
+    .hero-meta-item {
+      padding: 16px 0; border-right: none;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .hero-meta-item:nth-child(odd) { padding-right: 16px; }
+    .hero-meta-item:nth-child(even) { padding-left: 16px; }
+    .reveal-block { grid-template-columns: 1fr; gap: 32px; }
+    .quote-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 110px 24px 40px; }
+    .hero h1 { font-size: 38px; }
+    .section { padding: 64px 24px; }
+    .stat-row { grid-template-columns: 1fr; gap: 28px; }
+    .reception-stats { grid-template-columns: 1fr; }
+    .mechanic-row { grid-template-columns: 1fr; }
+    .mechanic-cell.clinical { border-right: none; border-bottom: 1px solid var(--hairline); }
+    .object-grid { gap: 10px; }
+    .gallery-item { width: 88vw; }
+    .gallery-wrap { padding: 12px 24px 32px; }
+    .page-footer {
+      flex-direction: column; gap: 24px; padding: 40px 24px; align-items: flex-start;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Yanzhi (Elliot) Yang</a>
+  <a href="index.html#portfolio" class="back">All Projects</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">Case Study · Serious Games</div>
+      <img class="hero-logo" src="Image/Shui%27s%20Odyssey/LOGO.png" alt="Shui's Odyssey logo, hand-painted brush lettering with the Chinese seal mark 故意" />
+      <h1>Shui's Odyssey</h1>
+      <p class="hero-subtitle-cn">《水远山遥》</p>
+      <p class="hero-tagline">A narrative puzzle game about memory, family, and the slow disappearance of a person we love.</p>
+      <p class="hero-positioning">When memory begins to fragment, love remains. A puzzle game that asks the player to live, briefly, inside an Alzheimer's mind.</p>
+    </div>
+    <figure class="hero-image">
+      <img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE1.png"
+           alt="A close-up portrait of young Shui in a hand-painted style; a smaller inset of 'Little Shui' as a child appears in the bottom-left corner."
+           fetchpriority="high" />
+    </figure>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Role</div>
+      <div class="hero-meta-value">Game Director &amp; Producer</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Period</div>
+      <div class="hero-meta-value">Mar 2023 – Dec 2024 · 22 mo</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Team</div>
+      <div class="hero-meta-value">Intentional Studio</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Platform</div>
+      <div class="hero-meta-value">Steam · 2P Games · Dec 2024</div>
+    </div>
+    <div class="hero-meta-item">
+      <div class="hero-meta-label">Reception</div>
+      <div class="hero-meta-value">Very Positive · ~85% positive</div>
+    </div>
+  </div>
+</header>
+
+<!-- WHY -->
+<section class="section section-tinted">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label"><span class="step-num">Why</span> · The case for the project</div>
+      <h2>Health communication tells the public <em>what</em> dementia is. Very little teaches them what it <em>feels like</em>.</h2>
+    </div>
+
+    <div class="stat-row fade">
+      <div class="stat">
+        <div class="stat-num">55M+</div>
+        <div class="stat-caption">people worldwide are currently living with dementia; projected to reach 139 million by 2050. <span style="color:var(--mid-blue)">— Alzheimer's Disease International</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">~75%</div>
+        <div class="stat-caption">of dementia cases globally remain undiagnosed — closer to 90% in low-income countries. <span style="color:var(--mid-blue)">— BrightFocus Foundation</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3 sec</div>
+        <div class="stat-caption">one new case of dementia is diagnosed somewhere in the world every three seconds. <span style="color:var(--mid-blue)">— ADI, World Alzheimer Report</span></div>
+      </div>
+    </div>
+
+    <div class="section-narrow body-copy fade">
+      <p>Most health communication about dementia teaches the public <em>what</em> the disease is. Very little teaches the public what the disease <em>feels like</em>. Family caregivers describe a particular, repeated frustration: clinicians and relatives can list symptoms but cannot imagine the inner experience of disorientation, of mistaking a daughter for a mother, of a kitchen suddenly becoming unfamiliar. A growing body of research on serious games for dementia suggests that interactive media can close part of this empathy gap — by letting the well briefly inhabit the perceptual world of the unwell. <strong style="color:var(--deep-blue)">Shui's Odyssey was built inside that hypothesis.</strong></p>
+    </div>
+
+    <figure class="anchor-image fade">
+      <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-2%E5%85%A8%E5%AE%B6%E7%A6%8F.png" alt="A hand-painted family photograph — a small object the player collects and assembles in-game." />
+      <figcaption>Family Photo · one of nine objects the player gathers</figcaption>
+    </figure>
+
+    <div class="section-narrow body-copy fade">
+      <p>Shui's Odyssey began as a student research project. Our team wanted to test a question we had not seen answered: when the visual grammar of cinematic montage — a tool film and animation use to compress and re-order memory — is handed to the player as an interactive mechanic, what kind of story can it tell?</p>
+      <p>Alzheimer's disease became our subject because its symptoms are themselves a form of involuntary montage: vision that cannot resolve, memories that surface out of order, the recent past missing while the distant past remains vivid. We wanted players to feel that grammar from the inside, not be told about it from the outside.</p>
+    </div>
+
+    <figure class="anchor-image fade">
+      <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-3%E6%80%80%E8%A1%A8.png" alt="An illustrated pocket watch — another in-game object that anchors a memory." />
+      <figcaption>Pocket Watch · time, kept in an object</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- TRAILER -->
+<section class="section">
+  <div class="trailer-wrap">
+    <div class="trailer-meta">
+      <span class="label">Watch the Trailer</span>
+      <span class="runtime">YouTube · ~2 min</span>
+    </div>
+    <div class="trailer-frame fade" id="trailer" role="button" tabindex="0" aria-label="Play trailer for Shui's Odyssey">
+      <img class="trailer-poster"
+           src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE7.png"
+           alt="Trailer poster — Shui sitting beside a younger figure, framed inside a memory."
+           loading="lazy" />
+      <div class="trailer-overlay">
+        <div class="trailer-play" aria-hidden="true">▶</div>
+        <div class="trailer-overlay-text">Play Trailer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="section section-tinted">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label"><span class="step-num">How</span> · Design rationale &amp; process</div>
+      <h2>Mechanic-to-symptom mapping: every interaction operationalizes a clinical reality.</h2>
+      <p class="lede">A Health Tech reader cares less about how the game looks than about whether the candidate can think rigorously about translating clinical concepts into interactive form, lead a team across disciplines, and ship.</p>
+    </div>
+
+    <div class="fade" style="margin-top: 32px;">
+      <div class="mechanic-row">
+        <div class="mechanic-cell clinical">
+          <div class="mechanic-tag clinical">Clinical reality</div>
+          People with Alzheimer's frequently experience visual-perceptual difficulties: trouble reading, judging distance, distinguishing colors and contrast, recognizing three-dimensional objects, and in later stages, visual hallucinations.
+        </div>
+        <div class="mechanic-cell response">
+          <div class="mechanic-tag">Design response</div>
+          <strong>Visual illusion mechanic.</strong> Every puzzle frame is a hand-painted scene where what the player sees and what is actually there diverge. The player must learn to read the image the way a person with AD must learn to read the world — with effort, doubt, and patience.
+        </div>
+      </div>
+      <div class="mechanic-row">
+        <div class="mechanic-cell clinical">
+          <div class="mechanic-tag clinical">Clinical reality</div>
+          Memory in Alzheimer's is asymmetric: distant memories often remain vivid while recent memories vanish first. Patients can be lucid about a childhood meal yet unable to recall a conversation from minutes ago.
+        </div>
+        <div class="mechanic-cell response">
+          <div class="mechanic-tag">Design response</div>
+          <strong>Memory-fragment assembly mechanic.</strong> The player pieces together scattered fragments of Shui's life. The temporal logic is deliberately broken — fragments from sixty years ago are sharp, fragments from yesterday are missing.
+        </div>
+      </div>
+      <div class="mechanic-row">
+        <div class="mechanic-cell clinical">
+          <div class="mechanic-tag clinical">Clinical reality</div>
+          Many people with AD lose the ability to reliably recognize the people closest to them, sometimes mistaking a daughter for a mother or a grandchild for a sibling. The misrecognition is not random; it follows the contour of older, stronger memories overwriting newer ones.
+        </div>
+        <div class="mechanic-cell response">
+          <div class="mechanic-tag">Design response</div>
+          <strong>Narrative misrecognition.</strong> The protagonist Shui mistakes her daughter Xiuhua for her own mother, and her grandson for her younger brother. The player initially reads these as fantasy; only later do they realize they are reading a clinical symptom.
+        </div>
+      </div>
+    </div>
+
+    <!-- Narrative reveal -->
+    <div class="reveal-block fade">
+      <figure class="reveal-image">
+        <img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE7.png" alt="A still framed like an old photograph: an elderly Shui sits beside a younger family member inside a wooden frame on the floor." />
+      </figure>
+      <div class="reveal-text">
+        <p>The game opens with Shui as a young woman. Without warning, she becomes old, and the player begins searching for a way to make her young again.</p>
+        <p>Hours of play later, the realization arrives quietly: Shui is not under a spell. She is old, and she has been old for a long time. The sudden aging the player has been trying to undo is the way Alzheimer's disease feels from the inside — a self-image frozen at a much earlier age, colliding with a body and a world that have moved on without permission.</p>
+        <p><strong style="color: var(--deep-blue); font-style: normal;">The mechanic is the diagnosis.</strong> The player learns the disease by being asked to live one of its central confusions.</p>
+      </div>
+    </div>
+
+    <!-- Leadership -->
+    <div class="section-narrow leader-block fade">
+      <div class="mechanic-tag" style="margin-bottom: 12px;">Team leadership</div>
+      <p>As Game Director and Producer, I held the project's center: setting creative direction, driving the production schedule across art, design, and engineering, owning external communication with our publisher 2P Games, and stepping into hands-on art and design work whenever a department needed a second pair of hands. The team operated as a hub-and-spoke, and I was the hub — which meant my measure of success was less my own output than the team's ability to keep moving.</p>
+    </div>
+
+    <!-- Honest scope note -->
+    <div class="section-narrow callout fade">
+      <div class="callout-label">A note on research method</div>
+      <p>The project did not include formal user interviews with people living with dementia. Several team members drew on direct family experience with the disease, and the design was checked against publicly available patient and caregiver writing. A future iteration of this kind of work — especially in a Health Tech context — would build in structured co-design with patients and caregivers from day one. That gap is part of what draws me toward Health-domain teams now.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECT GALLERY -->
+<section class="section section-pale">
+  <div class="section-inner">
+    <p class="object-intro fade">Nine objects from a fading life.</p>
+    <div class="object-grid">
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/1-1%E7%9C%BC%E9%95%9C.png" alt="A pair of glasses, hand-painted on a cream background." />
+        <figcaption class="object-name">Glasses</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/1-2%E9%80%9A%E7%9F%A5.png" alt="A handwritten notice or letter." />
+        <figcaption class="object-name">Notice</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/1-3%E6%9E%95%E5%B7%BE.png" alt="An embroidered pillowcase." />
+        <figcaption class="object-name">Pillowcase</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-1%E7%B0%AA%E5%AD%90.png" alt="A traditional hairpin." />
+        <figcaption class="object-name">Hairpin</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-2%E5%85%A8%E5%AE%B6%E7%A6%8F.png" alt="A family photograph." />
+        <figcaption class="object-name">Family Photo</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/2-3%E7%BA%A2%E6%A1%83%E7%B2%BF.png" alt="A King of Hearts playing card." />
+        <figcaption class="object-name">King of Hearts</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-1%E6%89%8B%E7%94%B5%E7%AD%92.png" alt="A flashlight." />
+        <figcaption class="object-name">Flashlight</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-2%E6%89%8B%E5%86%8C.png" alt="A small handbook or manual." />
+        <figcaption class="object-name">Manual</figcaption>
+      </figure>
+      <figure class="object-card fade">
+        <img src="Image/Shui%27s%20Odyssey/%E9%81%93%E5%85%B7/3-3%E6%80%80%E8%A1%A8.png" alt="A pocket watch." />
+        <figcaption class="object-name">Pocket Watch</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOT GALLERY -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label"><span class="step-num">Gallery</span> · From the game</div>
+      <h2>Hand-painted scenes that ask the player to look twice.</h2>
+    </div>
+  </div>
+  <div class="gallery-wrap">
+    <div class="gallery-strip">
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE2.png" alt="A wooden tabletop with collected family photographs and empty frames waiting to be filled." loading="lazy" /></div>
+        <figcaption>Memories collected, but not yet in order.</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE3.jpg" alt="A puzzle scene where a hand-painted environment has missing pieces." loading="lazy" /></div>
+        <figcaption>The image as a thing the mind has to assemble.</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE4.png" alt="A four-square scene grid: a kettle in a kitchen, a sewing machine, and two empty rooms framed in paper." loading="lazy" /></div>
+        <figcaption>What the player sees and what is actually there diverge.</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE5.png" alt="An elderly woman seated alone on a stone step, framed by a tall doorway and bare branches." loading="lazy" /></div>
+        <figcaption>The world keeps moving without asking permission.</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE6.png" alt="A wooden surface scattered with photographs of family members, glasses, a small red book, and other personal objects." loading="lazy" /></div>
+        <figcaption>The objects are vessels — each one carries a memory.</figcaption>
+      </figure>
+      <figure class="gallery-item">
+        <div class="frame"><img src="Image/Shui%27s%20Odyssey/%E6%B8%B8%E6%88%8F%E6%88%AA%E5%9B%BE7.png" alt="A framed scene: an elderly woman sits beside a younger man on a bench, photographs scattered nearby." loading="lazy" /></div>
+        <figcaption>Two faces from different decades, occupying the same room.</figcaption>
+      </figure>
+    </div>
+  </div>
+  <p class="gallery-hint">Drag to scroll</p>
+</section>
+
+<!-- RECEPTION -->
+<section class="section section-tinted">
+  <div class="section-inner">
+    <div class="section-narrow">
+      <div class="section-label"><span class="step-num">So What</span> · Reception &amp; impact</div>
+      <h2>Released to a real audience. Heard back from real people.</h2>
+    </div>
+
+    <div class="reception-stats fade">
+      <div class="stat">
+        <div class="stat-num">Steam</div>
+        <div class="stat-caption">Released December 2024 with publisher 2P Games · live at store.steampowered.com/app/2808960</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">~85%</div>
+        <div class="stat-caption">positive user reviews on Steam · Very Positive review status</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">Press</div>
+        <div class="stat-caption">covered by Adventure Gamers, Adventure Game Hotspot, and others in the narrative-adventure community</div>
+      </div>
+    </div>
+
+    <div class="quote-grid fade">
+      <div class="quote-card">
+        <p>I played this with my grandmother in mind. Halfway through, I realized I was learning what she had been trying to tell me for years.</p>
+        <div class="quote-attr">— Steam review · placeholder, pending final selection</div>
+      </div>
+      <div class="quote-card">
+        <p>A quiet, devastating little game that does what most documentaries about dementia cannot — it lets you feel it.</p>
+        <div class="quote-attr">— Press excerpt · placeholder, pending final selection</div>
+      </div>
+    </div>
+    <p class="open-note">Final review counts, press citations, and selected player quotes will be confirmed at build sign-off.</p>
+  </div>
+</section>
+
+<!-- NOW WHAT -->
+<section class="section">
+  <div class="section-inner section-narrow">
+    <div class="section-label"><span class="step-num">Now What</span> · For Health Tech work</div>
+    <h2>From a game about memory to the future of <em>health communication</em>.</h2>
+    <p class="lede">Five capabilities this project demonstrates, written for the Health Tech, digital health, aging-care, and patient-advocacy teams I'm looking to join.</p>
+
+    <div class="capability-list fade">
+      <div class="capability-item">
+        <div class="capability-num">01</div>
+        <div class="capability-text">
+          <h3>Interactive media for health understanding</h3>
+          <p>I can design experiences that move a health concept from the brochure to the body — where users feel rather than skim it.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">02</div>
+        <div class="capability-text">
+          <h3>Narrative as a clinical translation tool</h3>
+          <p>I can take a clinical fact (memory loss in AD is asymmetric, recent first) and turn it into a story beat the public will remember a year later.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">03</div>
+        <div class="capability-text">
+          <h3>Mechanic-to-symptom design thinking</h3>
+          <p>My approach is not to illustrate a condition but to operationalize it: every interaction maps to a specific clinical or experiential dimension.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">04</div>
+        <div class="capability-text">
+          <h3>End-to-end product leadership</h3>
+          <p>22 months from concept to a Steam release with Very Positive reception, leading an interdisciplinary team and managing publisher relations.</p>
+        </div>
+      </div>
+      <div class="capability-item">
+        <div class="capability-num">05</div>
+        <div class="capability-text">
+          <h3>Sensitive-topic communication</h3>
+          <p>Experience treating illness, aging, and family loss with the restraint they deserve, avoiding both clinical detachment and sentimentality.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="section section-pale">
+  <div class="section-inner section-narrow" style="text-align: center;">
+    <div class="section-label" style="justify-content: center;"><span class="step-num">Resources</span> · Play, watch, read</div>
+    <h2 style="text-align: center;">Find the project.</h2>
+    <div class="resources-row">
+      <a class="resource-btn primary" href="https://store.steampowered.com/app/2808960" target="_blank" rel="noopener">Play on Steam</a>
+      <a class="resource-btn" href="https://yanzhiyang1.com/game" target="_blank" rel="noopener">Game website</a>
+      <a class="resource-btn" href="https://youtu.be/tBMutOuVpeg" target="_blank" rel="noopener">Watch trailer</a>
+      <a class="resource-btn" href="https://adventuregamers.com" target="_blank" rel="noopener">Press: Adventure Gamers</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="footer-left">
+    Shui's Odyssey · 《水远山遥》
+    <span>Released December 2024 · Yanzhi (Elliot) Yang</span>
+  </div>
+  <a href="index.html#portfolio" class="next-link">All Projects</a>
+</footer>
+
+<script>
+  // Lazy-load YouTube only on click (facade pattern, no YouTube tracking on first paint)
+  (function() {
+    const trigger = document.getElementById('trailer');
+    if (!trigger) return;
+    const activate = () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/tBMutOuVpeg?autoplay=1&rel=0&modestbranding=1&cc_load_policy=1';
+      iframe.title = "Shui's Odyssey trailer";
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'eager';
+      trigger.innerHTML = '';
+      trigger.appendChild(iframe);
+      trigger.style.cursor = 'default';
+    };
+    trigger.addEventListener('click', activate);
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  })();
+
+  // Fade-in on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

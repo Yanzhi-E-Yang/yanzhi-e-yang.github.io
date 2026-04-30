@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:4500/osvita.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:4500/Image/OsVita/MainMenu_Bright.png\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"http://localhost:4500/Image/OsVita/Workout_Bright.png\")"
+    ]
+  }
+}
